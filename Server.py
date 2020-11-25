@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 #Special Vars
-PACKETSIZE = 2048
+PACKETSIZE = 6048
 
 ##Colors
 class colors:

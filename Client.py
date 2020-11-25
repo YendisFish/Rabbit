@@ -7,7 +7,8 @@ import time
 
 #Special Vars
 usrinrun = False
-PACKETSIZE = 2048
+PACKETSIZE = 6048
+doto = False
 
 class colors:
     PURPLE = '\033[95m'
@@ -49,21 +50,31 @@ except:
     print('Failed to connect to server')
     print('Server not up')
 
+print(colors.BOLD + colors.GREEN + 'Ready For User Input' + colors.END)
+
 ##User input
-while usrinrun == True:
-    print(colors.BOLD + colors.GREEN + 'Ready For User Input' + colors.END)
-    msg = input(colors.BOLD + colors.CYAN + 'Rabbit → ' + colors.END)
-    try:
-        clients.send(msg.encode('UTF-8'))
-        if msg == 'getvid':
-            print('Opening Video Client')
-            time.sleep(1)
-            with open(str(vidc), 'r') as f:
-                vidcmd = f.read()
-            os.system(str(vidcmd))
-        returned = clients.recv(PACKETSIZE).decode('UTF-8')
-        datatopcov = print(colors.BOLD + colors.BLUE + '-------------------------')
-        data = print(colors.YELLOW + returned)
-        databotcov = print(colors.BOLD + colors.BLUE + '-------------------------')
-    except:
-        print(colors.RED + 'Failed to contact/receive from the server')
+def main():
+    while usrinrun == True:
+        doto = True
+        try:
+            while doto == True:
+                msg = input(colors.BOLD + colors.CYAN + 'Rabbit → ' + colors.END)
+                doto = False
+                if not msg:
+                    print('Please Enter A String')
+                    doto = True
+            clients.send(msg.encode('UTF-8'))
+            if msg == 'getvid':
+                print('Opening Video Client')
+                time.sleep(1)
+                with open(str(vidc), 'r') as f:
+                    vidcmd = f.read()
+                os.system(str(vidcmd))
+            returned = clients.recv(PACKETSIZE).decode('UTF-8')
+            datatopcov = print(colors.BOLD + colors.BLUE + '-------------------------')
+            data = print(colors.YELLOW + returned)
+            databotcov = print(colors.BOLD + colors.BLUE + '-------------------------')
+        except:
+            print(colors.RED + 'Failed to contact/receive from the server')
+            break
+main()
